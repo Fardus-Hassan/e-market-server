@@ -10,6 +10,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:5174",
+      'https://e-market01.netlify.app'
     ],
     credentials: true,
   })
@@ -39,7 +40,7 @@ async function run() {
 
     app.get('/products', async(req, res) => {
       const products = await ProductCollection.find({}).toArray();
-      res.send(products);
+      res.send(products)
     })
 
 
