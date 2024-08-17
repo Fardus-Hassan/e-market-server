@@ -39,7 +39,7 @@ async function run() {
 
     app.get('/products', async(req, res) => {
       const products = await ProductCollection.find({}).toArray();
-      res.send(products);
+      res.send(products)
     })
 
 
