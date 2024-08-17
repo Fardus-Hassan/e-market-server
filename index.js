@@ -38,10 +38,51 @@ async function run() {
     const ProductCollection = client.db('E-MarketDB').collection('ProductCollection');
 
 
-    app.get('/products', async(req, res) => {
-      const products = await ProductCollection.find({}).toArray();
-      res.send(products);
-    })
+    // app.get('/products', async(req, res) => {
+    //   const products = await ProductCollection.find({}).toArray();
+    //   res.send(products);
+    // })
+
+    app.get('/products/byCount/productsCount', async (req, res) => {
+      const count = await ProductCollection.estimatedDocumentCount()
+      res.send({ count });
+  })
+
+    app.get('/products', async (req, res) => {
+      const size = parseInt(req.query.size) || 10; // Default to 10 if not provided
+      const page = parseInt(req.query.page) || 0; // Default to 0 if not provided
+  
+      try {
+          const cursor = await ProductCollection.find().skip(size * page).limit(size);
+          const products = await cursor.toArray();
+          res.send(products);
+      } catch (error) {
+          console.error('Error retrieving products:', error);
+          res.status(500).send({ error: 'An error occurred while fetching products' });
+      }
+  });
+  
+
+  app.get('/products/search/product', async (req, res) => {
+      const search = req.query.search;
+  
+      if (!search) {
+          return res.status(400).send({ error: 'Search query is required' });
+      }
+  
+      console.log(`Search query: ${search}`);
+  
+      const query = { name: { $regex: search, $options: 'i' } };
+  
+      try {
+          const result = await ProductCollection.find(query).toArray();
+          res.send(result);
+      } catch (error) {
+          console.error('Error retrieving products:', error);
+          res.status(500).send({ error: 'An error occurred while searching for products' });
+      }
+  });
+  
 
 
 
