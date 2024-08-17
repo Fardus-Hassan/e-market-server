@@ -12,3 +12,7 @@ To clone this repository, use the following command:
 
 ```bash
 git clone https://github.com/Fardus-Hassan/e-market-server.git
+```
+## Client Site Repo
+
+ You can view the Server Site here: [e-market-client](https://github.com/Fardus-Hassan/e-market-client)
