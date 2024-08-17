@@ -6,14 +6,14 @@ require('dotenv').config()
 const port = process.env.PORT || 3000
 
 app.use(
-    cors({
-      origin: [
-        "http://localhost:5173",
-        "http://localhost:5174",
-      ],
-      credentials: true,
-    })
-  );
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json())
 
 
@@ -33,6 +33,18 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+
+    const ProductCollection = client.db('E-MarketDB').collection('ProductCollection');
+
+
+    app.get('/products', async(req, res) => {
+      const products = await ProductCollection.find({}).toArray();
+      res.send(products);
+    })
+
+
+
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
@@ -50,9 +62,9 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('This is E-Market')
+  res.send('This is E-Market')
 })
 
 app.listen(port, () => {
-    console.log(`E-Market running on port ${port}`)
+  console.log(`E-Market running on port ${port}`)
 })
