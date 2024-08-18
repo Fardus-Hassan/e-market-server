@@ -58,7 +58,7 @@ async function run() {
           res.send(products);
       } catch (error) {
           console.error('Error retrieving products:', error);
-          res.status(500).send({ error: 'An error occurred while fetching products' });
+          res.status(500).send({ error: 'An error occurred while fetching products' })
       }
   });
   
